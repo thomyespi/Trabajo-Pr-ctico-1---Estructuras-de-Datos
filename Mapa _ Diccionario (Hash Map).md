@@ -12,12 +12,6 @@ devuelve el valor asociado de forma inmediata.
 La magia está en la **función hash**: toma la clave y produce siempre
 la misma dirección.
 
-**Problema que resuelve:** Cualquier situación donde necesitás encontrar
-algo por su nombre, no por su posición. Dado un identificador arbitrario
-— un nombre de usuario, una palabra, un código de producto — obtener su
-valor asociado de forma inmediata, sin recorrer nada ni comparar
-uno por uno.
-
 ### Definición y propiedades
 
 **Definición formal:** Un HashMap mantiene un conjunto de pares
@@ -80,27 +74,12 @@ colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
 
 > **Costo oculto — Rehash:** Cuando el HashMap supera cierto nivel de ocupación llamado _load factor_, crea un array del doble de tamaño y rehashea todas las claves existentes en sus nuevas posiciones. Este proceso cuesta O(n) ya que recorre todos los elementos, pero ocurre tan pocas veces que el costo amortizado de insertar sigue siendo O(1).
 
-### Detalles operativos
-
-- **Clave inexistente:** `find` lanza un error; `delete` no tiene efecto; `update` lanza un error.
-- **Clave duplicada:** `insert` reemplaza el valor anterior.
-- **Límite de tamaño:** el tamaño crece dinámicamente mediante rehashes.
-
 ---
 
 ## 3. Implementación
 
 ### Idea de implementación  
-Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contiene cero o más pares *(clave, valor)*.  
-
-El flujo básico de cualquier operación es siempre el mismo:
-
-1. Se aplica una función hash a la clave.
-2. Se obtiene un índice dentro del array.
-3. Se accede al bucket correspondiente.
-4. Se opera dentro del bucket (buscar, insertar, eliminar).
-
-Para resolver colisiones, la estrategia más simple y común es **chaining**, donde cada bucket es una lista.
+Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contiene cero o más pares *(clave, valor)*. Para resolver colisiones, la estrategia más simple y común es **chaining**, donde cada bucket es una lista.
 
 **Algoritmos clave (chaining):**
 
@@ -140,8 +119,6 @@ Estas condiciones deben cumplirse siempre, sin excepción:
 - No hay buckets “perdidos”: todo elemento es alcanzable desde el array.
 - La función hash aplicada a una clave siempre lleva al mismo bucket (mientras no haya rehash).
 - El factor de carga (`size / capacidad`) se mantiene bajo cierto umbral (ej: 0.75).
-
-Si alguno de estos invariantes se rompe, el HashMap deja de funcionar correctamente.
 
 ---
 
@@ -257,11 +234,7 @@ Ejemplos típicos:
 - Verificación de pertenencia: saber rápidamente si una clave ya existe.
 - Tablas de configuración: guardar pares clave→valor como parámetros, opciones o variables.
 
-En muchos problemas de programación competitiva o entrevistas aparece cuando el enunciado dice “buscar rápidamente”, “contar ocurrencias”, “detectar duplicados” o “asociar un identificador con un dato”.
-
 ### Cuándo NO usarlo
-
-Aunque es muy eficiente, un HashMap no siempre es la mejor opción.
 
 No conviene usarlo cuando:
 
@@ -280,13 +253,6 @@ No conviene usarlo cuando:
 | Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)                |
 | Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n)    |
 | Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados       |
-
-En general:
-
-- Si necesitás rapidez para buscar por clave, elegí HashMap.
-- Si necesitás orden, elegí árbol balanceado.
-- Si solo importa pertenencia, elegí Set.
-- Si necesitás acceso por posición, elegí Array.
 
 ### Ventajas / Desventajas
 
@@ -309,8 +275,6 @@ Hay varias pistas en un problema que sugieren que un HashMap puede ser la estruc
 - “Se busca acceso casi inmediato sin importar el tamaño del conjunto”.
 - “Cada elemento tiene un identificador único”.
 
-Si el problema habla de pares clave→valor, acceso rápido, unicidad de claves o conteo de ocurrencias, probablemente un HashMap sea una buena elección.
-
 ---
 
 
@@ -326,11 +290,23 @@ Si el problema habla de pares clave→valor, acceso rápido, unicidad de claves 
 
 ### Notas avanzadas
 
-- La función hash, colisiones, factor de carga (load factor) y rehashing determinan su rendimiento y comportamiento en distintos escenarios. Tambien se incluyen implementaciones concurrentes como ConcurrentHashMap, versiones persistentes en programación funcional y técnicas como hashing perfecto en casos específicos. El HashMap conecta estructuras básicas (arreglos, listas) con soluciones más avanzadas para acceso eficiente a datos, siendo una de las implementaciones más utilizadas del concepto abstracto de Map.
+- La función hash, colisiones, factor de carga (load factor) y rehashing determinan su rendimiento y comportamiento en distintos escenarios. También existen implementaciones concurrentes como ConcurrentHashMap, versiones persistentes en programación funcional y técnicas como hashing perfecto para casos específicos. El HashMap conecta estructuras básicas (arreglos, listas) con soluciones más avanzadas para acceso eficiente a datos.
 
 ---
 
 ## 6. Referencias y recursos
 
-- Enlaces y libros de referencia, artículos científicos.
-- Visualizaciones y demostraciones.
+### Libros
+
+- Cormen et al. — *Introduction to Algorithms* (CLRS), Cap. 11: Hash Tables.
+- Sedgewick & Wayne — *Algorithms*, Cap. 3: Searching.
+
+### Visualizaciones
+
+- VisuAlgo — Hash Table: `visualgo.net/en/hashtable`
+- CS USF — Hash Table Visualization: `www.cs.usfca.edu/~galles/visualization/OpenHash.html`
+
+### Documentación
+
+- Python `dict`: `docs.python.org/3/library/stdtypes.html#dict`
+- Java `HashMap`: `docs.oracle.com/en/java/docs/api/java.base/java/util/HashMap.html`
