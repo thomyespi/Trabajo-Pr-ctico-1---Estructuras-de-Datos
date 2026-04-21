@@ -17,6 +17,7 @@
 - **Descripción** de la organización interna (arrays, nodos enlazados, árboles, tablas, etc.).
 - **Ilustración sugerida:** incluye aquí un diagrama ASCII o referencia a una imagen en `attachments/`.
 
+>
 > Debe responder a: "¿qué estoy mirando?"
 
 ---
@@ -38,6 +39,7 @@
 - **Casos especiales:** operaciones en estructura vacía/llena, duplicados, orden, límites de tamaño.
 - **Comportamiento en concurrencia o fallos** (si aplica).
 
+>
 > Debe responder a: "¿qué puedo hacer y cuánto cuesta?"
 
 ---
@@ -58,6 +60,7 @@
 - Proporciona 1-2 snippets claros y mínimos (en Python).
 - Ejemplo de uso típico con entrada y salida esperada.
 
+>
 > Debe responder a: "¿cómo lo programo sin romperlo?"
 
 ---
@@ -84,6 +87,7 @@
 
 - Pistas en el enunciado de un problema que indican que esta estructura es adecuada.
 
+>
 > Debe responder a: "¿cuándo conviene usarlo?"
 
 ---
@@ -102,6 +106,7 @@
 
 - Temas avanzados como persistencia, concurrencia, paralelismo, ordenamientos aleatorios, caching, tuning de parámetros.
 
+>
 > Debe responder a: "¿cómo encaja en el mapa general de estructuras de datos?"
 
 ---
