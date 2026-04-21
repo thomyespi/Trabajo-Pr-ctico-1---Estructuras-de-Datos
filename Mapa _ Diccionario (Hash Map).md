@@ -4,20 +4,45 @@
 
 ### Intuición
 
-- **Idea central:** ¿Cuál es la idea simple detrás de esta estructura?
-- **Problema que resuelve:** ¿Qué tipo de problema hace sencillo o eficiente?
+Si imaginamos una biblioteca donde el título de cada libro te dice directamente
+en qué estante está. No recorrés nada, no comparás uno por uno — vas
+directo. Un HashMap funciona así: le das una clave, y la estructura te
+devuelve el valor asociado de forma inmediata.
 
-### Definición / propiedades
+La magia está en la **función hash**: toma la clave y produce siempre
+la misma dirección.
 
-- **Definición formal:** invariantes y reglas que siempre se cumplen.
-- **Propiedades clave:** orden, acotamiento, restricciones sobre elementos, estabilidad, etc.
+**Problema que resuelve:** Cualquier situación donde necesitás encontrar
+algo por su nombre, no por su posición. Dado un identificador arbitrario
+— un nombre de usuario, una palabra, un código de producto — obtener su
+valor asociado de forma inmediata, sin recorrer nada ni comparar
+uno por uno.
+
+### Definición y propiedades
+
+**Definición formal:** Un HashMap mantiene un conjunto de pares
+clave→valor bajo tres reglas que nunca se rompen:
+
+- Cada clave existe a lo sumo una vez. Insertar una clave ya existente
+  reemplaza el valor anterior.
+- La misma clave siempre produce el mismo índice. La función hash
+  es determinista.
+- Todo valor almacenado es alcanzable por su clave.
+
+**Propiedades clave:**
+
+- **Sin orden:** las claves no se guardan alfabéticamente ni por
+  orden de inserción.
+- **Claves únicas:** no pueden coexistir dos entradas con la misma
+  clave.
+- **Sin restricción sobre valores:** cualquier dato puede ser un valor;
+  la unicidad aplica solo a las claves.
 
 ### Representación
 
 - **Descripción** de la organización interna (arrays, nodos enlazados, árboles, tablas, etc.).
 - **Ilustración sugerida:** incluye aquí un diagrama ASCII o referencia a una imagen en `attachments/`.
 
->
 > Debe responder a: "¿qué estoy mirando?"
 
 ---
