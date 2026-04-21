@@ -102,21 +102,136 @@ colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
 
 ## 3. Implementación
 
-### Idea de implementación
+### Idea de implementación  
+Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contiene cero o más pares *(clave, valor)*.  
 
-- Descripción de la(s) estrategia(s) típica(s) para implementar la estructura.
-- Algoritmos clave y pasos principales.
+El flujo básico de cualquier operación es siempre el mismo:
 
-### Invariantes
+1. Se aplica una función hash a la clave.
+2. Se obtiene un índice dentro del array.
+3. Se accede al bucket correspondiente.
+4. Se opera dentro del bucket (buscar, insertar, eliminar).
 
-- Lista de comprobaciones e invariantes que el código debe garantizar siempre (por ejemplo: punteros no nulos, tamaño consistente, heap property, ordenamiento mantenido).
+Para resolver colisiones, la estrategia más simple y común es **chaining**, donde cada bucket es una lista.
 
-### Ejemplo de código
+**Algoritmos clave (chaining):**
 
-- Proporciona 1-2 snippets claros y mínimos (en Python).
-- Ejemplo de uso típico con entrada y salida esperada.
+- **insert(key, value):**
+  1. Calcular índice: `i = hash(key) % capacidad`
+  2. Recorrer el bucket:
+     - Si la clave existe → reemplazar valor
+     - Si no existe → agregar nuevo par
+  3. Si el factor de carga supera el límite → rehash
 
-> Debe responder a: "¿cómo lo programo sin romperlo?"
+- **find(key):**
+  1. Calcular índice
+  2. Recorrer bucket
+  3. Si encuentra la clave → retorna valor
+  4. Si no → error
+
+- **delete(key):**
+  1. Calcular índice
+  2. Buscar en el bucket
+  3. Si existe → eliminar
+  4. Si no → no hace nada
+
+---
+
+### Invariantes  
+Estas condiciones deben cumplirse siempre, sin excepción:
+
+- Cada clave aparece **como máximo una vez** en toda la estructura.
+- El tamaño (`size`) coincide con la cantidad real de pares almacenados.
+- Todos los elementos están en el bucket que corresponde a su hash.
+- No hay buckets “perdidos”: todo elemento es alcanzable desde el array.
+- La función hash aplicada a una clave siempre lleva al mismo bucket (mientras no haya rehash).
+- El factor de carga (`size / capacidad`) se mantiene bajo cierto umbral (ej: 0.75).
+
+Si alguno de estos invariantes se rompe, el HashMap deja de funcionar correctamente.
+
+---
+
+### Ejemplo de código (Python)
+
+Implementación mínima usando **chaining**:
+
+```python
+class HashMap:
+    def __init__(self, capacity=8):
+        self.capacity = capacity
+        self.size = 0
+        self.buckets = [[] for _ in range(capacity)]
+
+    def _hash(self, key):
+        return hash(key) % self.capacity
+
+    def insert(self, key, value):
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                bucket[i] = (key, value)
+                return
+
+        bucket.append((key, value))
+        self.size += 1
+
+        if self.size / self.capacity > 0.75:
+            self._rehash()
+
+    def find(self, key):
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        for k, v in bucket:
+            if k == key:
+                return v
+
+        raise KeyError("Clave no encontrada")
+
+    def delete(self, key):
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                del bucket[i]
+                self.size -= 1
+                return
+
+    def _rehash(self):
+        old_buckets = self.buckets
+        self.capacity *= 2
+        self.buckets = [[] for _ in range(self.capacity)]
+        self.size = 0
+
+        for bucket in old_buckets:
+            for k, v in bucket:
+                self.insert(k, v)
+```
+
+### Ejemplo de Uso típico
+
+```python
+m = HashMap()
+
+m.insert("usuario1", 100)
+m.insert("usuario2", 200)
+
+print(m.find("usuario1"))  # 100
+
+m.update = m.insert  # reutilizamos insert para update
+m.update("usuario1", 150)
+
+print(m.find("usuario1"))  # 150
+
+m.delete("usuario2")
+```
+
+### Salida esperada:
+  100
+  150
 
 ---
 
