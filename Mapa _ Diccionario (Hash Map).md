@@ -71,23 +71,12 @@ colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
 
 ### Complejidad
 
-- **`insert(key, value)`:**
-  - Tiempo promedio: O(1)
-  - Tiempo peor: O(n)
-  - Tiempo amortizado: O(1)
-  - Complejidad espacial adicional: O(1)
-- **`find(key)`:**
-  - Tiempo promedio: O(1)
-  - Tiempo peor: O(n)
-  - Complejidad espacial adicional: O(1)
-- **`delete(key)`:**
-  - Tiempo promedio: O(1)
-  - Tiempo peor: O(n)
-  - Complejidad espacial adicional: O(1)
-- **`update(key, value)`:**
-  - Tiempo promedio: O(1)
-  - Tiempo peor: O(n)
-  - Complejidad espacial adicional: O(1)
+| Operación | Promedio | Peor caso | Amortizado | Espacio adicional |
+|---|---|---|---|---|
+| `insert(key, value)` | O(1) | O(n) | O(1) | O(1) |
+| `find(key)` | O(1) | O(n) | — | O(1) |
+| `delete(key)` | O(1) | O(n) | — | O(1) |
+| `update(key, value)` | O(1) | O(n) | — | O(1) |
 
 > **Costo oculto — Rehash:** Cuando el HashMap supera cierto nivel de ocupación llamado _load factor_, crea un array del doble de tamaño y rehashea todas las claves existentes en sus nuevas posiciones. Este proceso cuesta O(n) ya que recorre todos los elementos, pero ocurre tan pocas veces que el costo amortizado de insertar sigue siendo O(1).
 
@@ -96,7 +85,6 @@ colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
 - **Clave inexistente:** `find` lanza un error; `delete` no tiene efecto; `update` lanza un error.
 - **Clave duplicada:** `insert` reemplaza el valor anterior.
 - **Límite de tamaño:** el tamaño crece dinámicamente mediante rehashes.
-- **Concurrencia:** el `dict` de Python no es thread-safe y no está pensado para accesos simultáneos.
 
 ---
 
@@ -134,6 +122,12 @@ Para resolver colisiones, la estrategia más simple y común es **chaining**, do
   2. Buscar en el bucket
   3. Si existe → eliminar
   4. Si no → no hace nada
+
+- **update(key, value):**
+  1. Calcular índice
+  2. Recorrer el bucket
+  3. Si encuentra la clave → reemplazar valor
+  4. Si no → error
 
 ---
 
@@ -200,6 +194,17 @@ class HashMap:
                 self.size -= 1
                 return
 
+    def update(self, key, value):
+        index = self._hash(key)
+        bucket = self.buckets[index]
+
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                bucket[i] = (key, value)
+                return
+
+        raise KeyError("Clave no encontrada")
+
     def _rehash(self):
         old_buckets = self.buckets
         self.capacity *= 2
@@ -221,7 +226,6 @@ m.insert("usuario2", 200)
 
 print(m.find("usuario1"))  # 100
 
-m.update = m.insert  # reutilizamos insert para update
 m.update("usuario1", 150)
 
 print(m.find("usuario1"))  # 150
@@ -230,12 +234,14 @@ m.delete("usuario2")
 ```
 
 ### Salida esperada:
-  100
-  150
+
+```
+100
+150
+```
 
 ---
 
-```md id="n7sm2f"
 ## 4. Uso y criterio
 
 ### Casos de uso
@@ -270,11 +276,10 @@ No conviene usarlo cuando:
 
 | Estructura       | Ventaja frente a HashMap                                    | Desventaja frente a HashMap |
 |------------------|-------------------------------------------------------------|-----------------------------|
-| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n) 
-| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n) 
-| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n) 
-| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados 
-| Tabla de hash    | Es la estructura interna que implementa el HashMap          | No representa directamente la interfaz c->v
+| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n)    |
+| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)                |
+| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n)    |
+| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados       |
 
 En general:
 
@@ -283,23 +288,15 @@ En general:
 - Si solo importa pertenencia, elegí Set.
 - Si necesitás acceso por posición, elegí Array.
 
-### Ventajas / desventajas
+### Ventajas / Desventajas
 
-**Ventajas:**
-
-- Inserción, búsqueda y borrado en O(1) promedio.
-- Muy útil para resolver problemas de conteo, agrupamiento e indexación.
-- Escala bien para grandes volúmenes de datos.
-- Permite modelar asociaciones naturales clave→valor.
-- Es simple de usar desde muchos lenguajes modernos.
-
-**Desventajas:**
-
-- No mantiene orden.
-- Puede consumir bastante memoria adicional.
-- Depende de una buena función hash.
-- Las colisiones pueden degradar el rendimiento.
-- El rehash puede provocar pausas costosas cuando la estructura crece.
+| Ventajas | Desventajas |
+|----------|-------------|
+| Inserción, búsqueda y borrado en O(1) promedio | No mantiene orden |
+| Muy útil para conteo, agrupamiento e indexación | Puede consumir bastante memoria adicional |
+| Escala bien para grandes volúmenes de datos | Depende de una buena función hash |
+| Permite modelar asociaciones naturales clave→valor | Las colisiones pueden degradar el rendimiento |
+| Simple de usar desde muchos lenguajes modernos | El rehash puede provocar pausas costosas |
 
 ### Señales de reconocimiento
 
