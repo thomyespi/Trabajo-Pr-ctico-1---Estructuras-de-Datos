@@ -235,31 +235,87 @@ m.delete("usuario2")
 
 ---
 
+```md id="n7sm2f"
 ## 4. Uso y criterio
 
 ### Casos de uso
 
-- Situaciones y problemas donde la estructura encaja naturalmente.
+Un HashMap encaja naturalmente cuando el problema consiste en asociar claves con valores y acceder a ellos de manera rápida.
+
+Ejemplos típicos:
+
+- Conteo de frecuencias: cantidad de apariciones de palabras, letras o números.
+- Índices por identificador: buscar usuarios por email, productos por código o alumnos por legajo.
+- Cachés y memoización: guardar resultados ya calculados para evitar recomputarlos.
+- Agrupamiento: agrupar elementos por categoría, fecha, autor, tipo, etc.
+- Verificación de pertenencia: saber rápidamente si una clave ya existe.
+- Tablas de configuración: guardar pares clave→valor como parámetros, opciones o variables.
+
+En muchos problemas de programación competitiva o entrevistas aparece cuando el enunciado dice “buscar rápidamente”, “contar ocurrencias”, “detectar duplicados” o “asociar un identificador con un dato”.
 
 ### Cuándo NO usarlo
 
-- Escenarios donde su uso es contraproducente o subóptimo.
+Aunque es muy eficiente, un HashMap no siempre es la mejor opción.
+
+No conviene usarlo cuando:
+
+- Se necesita mantener los datos ordenados. Un HashMap no conserva orden alfabético, numérico ni de inserción.
+- Se requiere recorrer los elementos en orden. Para eso suele ser mejor un árbol balanceado o un array ordenado.
+- El conjunto de claves es muy pequeño. En tamaños chicos, una lista o array puede ser más simple y suficientemente rápido.
+- Se necesita aprovechar memoria al máximo. Un HashMap suele consumir bastante más memoria que otras estructuras debido a buckets vacíos, punteros y espacio reservado.
+- Las claves cambian constantemente. Modificar una clave implica borrar e insertar nuevamente.
+- Se necesita garantizar rendimiento en el peor caso. Aunque normalmente es O(1), una mala distribución hash puede degradar las operaciones a O(n).
 
 ### Comparaciones
 
-- Alternativas comunes y cuándo elegir cada una (lista comparativa breve).
+| Estructura       | Ventaja frente a HashMap                                    | Desventaja frente a HashMap |
+|------------------|-------------------------------------------------------------|-----------------------------|
+| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n) 
+| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n) 
+| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n) 
+| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados 
+| Tabla de hash    | Es la estructura interna que implementa el HashMap          | No representa directamente la interfaz c->v
+
+En general:
+
+- Si necesitás rapidez para buscar por clave, elegí HashMap.
+- Si necesitás orden, elegí árbol balanceado.
+- Si solo importa pertenencia, elegí Set.
+- Si necesitás acceso por posición, elegí Array.
 
 ### Ventajas / desventajas
 
-- Trade-offs prácticos en rendimiento, memoria, simplicidad, y facilidad de implementación.
+**Ventajas:**
+
+- Inserción, búsqueda y borrado en O(1) promedio.
+- Muy útil para resolver problemas de conteo, agrupamiento e indexación.
+- Escala bien para grandes volúmenes de datos.
+- Permite modelar asociaciones naturales clave→valor.
+- Es simple de usar desde muchos lenguajes modernos.
+
+**Desventajas:**
+
+- No mantiene orden.
+- Puede consumir bastante memoria adicional.
+- Depende de una buena función hash.
+- Las colisiones pueden degradar el rendimiento.
+- El rehash puede provocar pausas costosas cuando la estructura crece.
 
 ### Señales de reconocimiento
 
-- Pistas en el enunciado de un problema que indican que esta estructura es adecuada.
+Hay varias pistas en un problema que sugieren que un HashMap puede ser la estructura adecuada:
 
-> Debe responder a: "¿cuándo conviene usarlo?"
+- “Necesitamos encontrar rápidamente un dato a partir de una clave”.
+- “Queremos saber cuántas veces aparece cada elemento”.
+- “Hay que detectar duplicados”.
+- “Se necesita agrupar elementos por alguna propiedad”.
+- “Se busca acceso casi inmediato sin importar el tamaño del conjunto”.
+- “Cada elemento tiene un identificador único”.
+
+Si el problema habla de pares clave→valor, acceso rápido, unicidad de claves o conteo de ocurrencias, probablemente un HashMap sea una buena elección.
 
 ---
+
 
 ## 5. Relaciones y extensiones
 
