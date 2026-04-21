@@ -318,17 +318,15 @@ Si el problema habla de pares clave→valor, acceso rápido, unicidad de claves 
 
 ### Variantes
 
-- Variantes y mejoras (por ejemplo: versiones balanceadas, persistentes, acotadas, indexadas, con hashing, etc.).
+- El HashMap puede implementarse principalmente mediante encadenamiento (listas por bucket) o direccionamiento abierto (elementos dentro del arreglo con probing). Existen variantes optimizadas como Cuckoo Hashing y Robin Hood Hashing, que mejoran la distribución y el rendimiento ante colisiones.
 
 ### Relación con otras estructuras
 
-- Dependencias conceptuales y cómo se combina con otras estructuras.
+- Se basa en arreglos como estructura principal. Para resolver colisiones puede usar listas enlazadas o árboles balanceados como Red-Black Tree. Los conjuntos (Set) suelen implementarse sobre HashMaps. Como alternativa, TreeMap utiliza árboles para mantener orden en las claves.
 
 ### Notas avanzadas
 
-- Temas avanzados como persistencia, concurrencia, paralelismo, ordenamientos aleatorios, caching, tuning de parámetros.
-
-> Debe responder a: "¿cómo encaja en el mapa general de estructuras de datos?"
+- La función hash, colisiones, factor de carga (load factor) y rehashing determinan su rendimiento y comportamiento en distintos escenarios. Tambien se incluyen implementaciones concurrentes como ConcurrentHashMap, versiones persistentes en programación funcional y técnicas como hashing perfecto en casos específicos. El HashMap conecta estructuras básicas (arreglos, listas) con soluciones más avanzadas para acceso eficiente a datos, siendo una de las implementaciones más utilizadas del concepto abstracto de Map.
 
 ---
 
