@@ -56,26 +56,47 @@ colisión, se busca el siguiente bucket libre.
 ![Open Addressing](adjuntos/hashmap_open.png)
 
 En chaining los buckets crecen hacia afuera; en open addressing todo
-convive dentro de la misma estructura.
+convive dentro de la misma estructura. En chaining, si muchas claves
+colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
+— ese es el peor caso de todas las operaciones.
 
 ## 2. Operaciones y complejidad
 
 ### Operaciones principales
 
-- Lista de operaciones con nombres estandarizados (por ejemplo: `push`/`pop`/`peek`, `insert`/`delete`/`find`, `append`/`concat`, `union`/`intersect`).
-- Para cada operación: breve descripción de lo que hace.
+- **`insert(key, value)`:** Agrega un nuevo par clave→valor al mapa. Si la clave ya existe, reemplaza el valor anterior.
+- **`find(key)`:** Dado una clave, retorna el valor asociado. Si la clave no existe, lanza un error.
+- **`delete(key)`:** Elimina un par clave→valor del mapa. Si la clave no existe, no tiene efecto.
+- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente por uno nuevo.
 
 ### Complejidad
 
-- Por operación: tiempo (peor / promedio / amortizado) y complejidad espacial adicional.
-- Notas sobre costos ocultos (reallocs, rehash, recorridos, copias).
+- **`insert(key, value)`:**
+  - Tiempo promedio: O(1)
+  - Tiempo peor: O(n)
+  - Tiempo amortizado: O(1)
+  - Complejidad espacial adicional: O(1)
+- **`find(key)`:**
+  - Tiempo promedio: O(1)
+  - Tiempo peor: O(n)
+  - Complejidad espacial adicional: O(1)
+- **`delete(key)`:**
+  - Tiempo promedio: O(1)
+  - Tiempo peor: O(n)
+  - Complejidad espacial adicional: O(1)
+- **`update(key, value)`:**
+  - Tiempo promedio: O(1)
+  - Tiempo peor: O(n)
+  - Complejidad espacial adicional: O(1)
+
+> **Costo oculto — Rehash:** Cuando el HashMap supera cierto nivel de ocupación llamado _load factor_, crea un array del doble de tamaño y rehashea todas las claves existentes en sus nuevas posiciones. Este proceso cuesta O(n) ya que recorre todos los elementos, pero ocurre tan pocas veces que el costo amortizado de insertar sigue siendo O(1).
 
 ### Detalles operativos
 
-- **Casos especiales:** operaciones en estructura vacía/llena, duplicados, orden, límites de tamaño.
-- **Comportamiento en concurrencia o fallos** (si aplica).
-
-> Debe responder a: "¿qué puedo hacer y cuánto cuesta?"
+- **Clave inexistente:** `find` lanza un error; `delete` no tiene efecto; `update` lanza un error.
+- **Clave duplicada:** `insert` reemplaza el valor anterior.
+- **Límite de tamaño:** el tamaño crece dinámicamente mediante rehashes.
+- **Concurrencia:** el `dict` de Python no es thread-safe y no está pensado para accesos simultáneos.
 
 ---
 
