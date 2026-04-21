@@ -40,12 +40,23 @@ clave→valor bajo tres reglas que nunca se rompen:
 
 ### Representación
 
-- **Descripción** de la organización interna (arrays, nodos enlazados, árboles, tablas, etc.).
-- **Ilustración sugerida:** incluye aquí un diagrama ASCII o referencia a una imagen en `attachments/`.
+Internamente, un HashMap es un conjunto de posiciones llamadas
+**buckets**. Cada clave pasa por la función hash, que determina en qué
+bucket se almacena el par clave→valor. Cuando dos claves caen en el
+mismo bucket — una **colisión** — hay dos estrategias:
 
-> Debe responder a: "¿qué estoy mirando?"
+**Chaining:** cada bucket contiene una lista de pares. Las colisiones
+se encadenan.
 
----
+![Chaining](adjuntos/hashmap_chaining.png)
+
+**Open addressing:** cada par vive directamente en el array. Ante una
+colisión, se busca el siguiente bucket libre.
+
+![Open Addressing](adjuntos/hashmap_open.png)
+
+En chaining los buckets crecen hacia afuera; en open addressing todo
+convive dentro de la misma estructura.
 
 ## 2. Operaciones y complejidad
 
@@ -64,7 +75,6 @@ clave→valor bajo tres reglas que nunca se rompen:
 - **Casos especiales:** operaciones en estructura vacía/llena, duplicados, orden, límites de tamaño.
 - **Comportamiento en concurrencia o fallos** (si aplica).
 
->
 > Debe responder a: "¿qué puedo hacer y cuánto cuesta?"
 
 ---
@@ -85,7 +95,6 @@ clave→valor bajo tres reglas que nunca se rompen:
 - Proporciona 1-2 snippets claros y mínimos (en Python).
 - Ejemplo de uso típico con entrada y salida esperada.
 
->
 > Debe responder a: "¿cómo lo programo sin romperlo?"
 
 ---
@@ -112,7 +121,6 @@ clave→valor bajo tres reglas que nunca se rompen:
 
 - Pistas en el enunciado de un problema que indican que esta estructura es adecuada.
 
->
 > Debe responder a: "¿cuándo conviene usarlo?"
 
 ---
@@ -131,7 +139,6 @@ clave→valor bajo tres reglas que nunca se rompen:
 
 - Temas avanzados como persistencia, concurrencia, paralelismo, ordenamientos aleatorios, caching, tuning de parámetros.
 
->
 > Debe responder a: "¿cómo encaja en el mapa general de estructuras de datos?"
 
 ---
