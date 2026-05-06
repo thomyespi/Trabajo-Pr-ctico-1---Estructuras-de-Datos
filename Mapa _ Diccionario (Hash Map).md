@@ -65,12 +65,12 @@ colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
 
 ### Complejidad
 
-| Operación | Promedio | Peor caso | Amortizado | Espacio adicional |
-|---|---|---|---|---|
-| `insert(key, value)` | O(1) | O(n) | O(1) | O(1) |
-| `find(key)` | O(1) | O(n) | — | O(1) |
-| `delete(key)` | O(1) | O(n) | — | O(1) |
-| `update(key, value)` | O(1) | O(n) | — | O(1) |
+| Operación            | Promedio | Peor caso | Amortizado | Espacio adicional |
+| -------------------- | -------- | --------- | ---------- | ----------------- |
+| `insert(key, value)` | O(1)     | O(n)      | O(1)       | O(1)              |
+| `find(key)`          | O(1)     | O(n)      | —          | O(1)              |
+| `delete(key)`        | O(1)     | O(n)      | —          | O(1)              |
+| `update(key, value)` | O(1)     | O(n)      | —          | O(1)              |
 
 > **Costo oculto — Rehash:** Cuando el HashMap supera cierto nivel de ocupación llamado _load factor_, crea un array del doble de tamaño y rehashea todas las claves existentes en sus nuevas posiciones. Este proceso cuesta O(n) ya que recorre todos los elementos, pero ocurre tan pocas veces que el costo amortizado de insertar sigue siendo O(1).
 
@@ -78,8 +78,9 @@ colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
 
 ## 3. Implementación
 
-### Idea de implementación  
-Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contiene cero o más pares *(clave, valor)*. Para resolver colisiones, la estrategia más simple y común es **chaining**, donde cada bucket es una lista.
+### Idea de implementación
+
+Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contiene cero o más pares _(clave, valor)_. Para resolver colisiones, la estrategia más simple y común es **chaining**, donde cada bucket es una lista.
 
 **Algoritmos clave (chaining):**
 
@@ -110,7 +111,8 @@ Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contie
 
 ---
 
-### Invariantes  
+### Invariantes
+
 Estas condiciones deben cumplirse siempre, sin excepción:
 
 - Cada clave aparece **como máximo una vez** en toda la estructura.
@@ -247,22 +249,22 @@ No conviene usarlo cuando:
 
 ### Comparaciones
 
-| Estructura       | Ventaja frente a HashMap                                    | Desventaja frente a HashMap |
-|------------------|-------------------------------------------------------------|-----------------------------|
-| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n)    |
-| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)                |
-| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n)    |
-| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados       |
+| Estructura       | Ventaja frente a HashMap                                    | Desventaja frente a HashMap      |
+| ---------------- | ----------------------------------------------------------- | -------------------------------- |
+| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n) |
+| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)             |
+| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n) |
+| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados    |
 
 ### Ventajas / Desventajas
 
-| Ventajas | Desventajas |
-|----------|-------------|
-| Inserción, búsqueda y borrado en O(1) promedio | No mantiene orden |
-| Muy útil para conteo, agrupamiento e indexación | Puede consumir bastante memoria adicional |
-| Escala bien para grandes volúmenes de datos | Depende de una buena función hash |
+| Ventajas                                           | Desventajas                                   |
+| -------------------------------------------------- | --------------------------------------------- |
+| Inserción, búsqueda y borrado en O(1) promedio     | No mantiene orden                             |
+| Muy útil para conteo, agrupamiento e indexación    | Puede consumir bastante memoria adicional     |
+| Escala bien para grandes volúmenes de datos        | Depende de una buena función hash             |
 | Permite modelar asociaciones naturales clave→valor | Las colisiones pueden degradar el rendimiento |
-| Simple de usar desde muchos lenguajes modernos | El rehash puede provocar pausas costosas |
+| Simple de usar desde muchos lenguajes modernos     | El rehash puede provocar pausas costosas      |
 
 ### Señales de reconocimiento
 
@@ -277,20 +279,27 @@ Hay varias pistas en un problema que sugieren que un HashMap puede ser la estruc
 
 ---
 
-
 ## 5. Relaciones y extensiones
 
 ### Variantes
 
-- El HashMap puede implementarse principalmente mediante encadenamiento (listas por bucket) o direccionamiento abierto (elementos dentro del arreglo con probing). Existen variantes optimizadas como Cuckoo Hashing y Robin Hood Hashing, que mejoran la distribución y el rendimiento ante colisiones.
+- Existen múltiples formas de implementar mapas según las necesidades: los basados en tablas hash priorizan velocidad de acceso promedio constante; los basados en árboles balanceados mantienen un orden en las claves; y otros como los Linked Maps preservan el orden de inserción. Estas variantes representan distintos compromisos entre eficiencia, orden y uso de memoria.
 
 ### Relación con otras estructuras
 
-- Se basa en arreglos como estructura principal. Para resolver colisiones puede usar listas enlazadas o árboles balanceados como Red-Black Tree. Los conjuntos (Set) suelen implementarse sobre HashMaps. Como alternativa, TreeMap utiliza árboles para mantener orden en las claves.
+- Respecto a su relación con otras estructuras, los mapas dependen conceptualmente de:
+  - Arrays, como base para almacenar datos (especialmente en hashing).
+  - Listas enlazadas, usadas en manejo de colisiones.
+  - Árboles, para mantener orden y garantizar complejidad logarítmica.
+
+Esto los convierte en una especie de “estructura compuesta”, que reutiliza ideas de otras más básicas.
 
 ### Notas avanzadas
 
-- La función hash, colisiones, factor de carga (load factor) y rehashing determinan su rendimiento y comportamiento en distintos escenarios. También existen implementaciones concurrentes como ConcurrentHashMap, versiones persistentes en programación funcional y técnicas como hashing perfecto para casos específicos. El HashMap conecta estructuras básicas (arreglos, listas) con soluciones más avanzadas para acceso eficiente a datos.
+- En términos de notas avanzadas, los maps pueden extenderse para soportar:
+  - Persistencia, manteniendo versiones inmutables (útil en programación funcional).
+  - Concurrencia, permitiendo accesos simultáneos seguros (Concurrent Maps).
+  - Aleatoriedad, como en funciones hash diseñadas para distribuir uniformemente las claves.
 
 ---
 
@@ -298,8 +307,8 @@ Hay varias pistas en un problema que sugieren que un HashMap puede ser la estruc
 
 ### Libros
 
-- Cormen et al. — *Introduction to Algorithms* (CLRS), Cap. 11: Hash Tables.
-- Sedgewick & Wayne — *Algorithms*, Cap. 3: Searching.
+- Cormen et al. — _Introduction to Algorithms_ (CLRS), Cap. 11: Hash Tables.
+- Sedgewick & Wayne — _Algorithms_, Cap. 3: Searching.
 
 ### Visualizaciones
 
