@@ -1,58 +1,52 @@
-# Mapa / Diccionario (Hash Map)
+# Mapa / Diccionario (Map)
 
 ## 1. Qué es y cómo funciona
 
 ### Intuición
 
-Si imaginamos una biblioteca donde el título de cada libro te dice directamente
-en qué estante está. No recorrés nada, no comparás uno por uno — vas
-directo. Un HashMap funciona así: le das una clave, y la estructura te
-devuelve el valor asociado de forma inmediata.
+Si imaginamos una agenda telefónica, cada nombre está asociado a un número.
+No buscás por posición ni por índice numérico: buscás por una **clave**
+(el nombre del contacto) y obtenés el valor asociado (el número telefónico).
 
-La magia está en la **función hash**: toma la clave y produce siempre
-la misma dirección.
+Un Map funciona exactamente así: mantiene asociaciones entre **claves** y **valores**.
+Su objetivo es permitir recuperar información **a partir de una clave** de manera clara y eficiente.
 
 ### Definición y propiedades
 
-**Definición formal:** Un HashMap mantiene un conjunto de pares
-clave→valor bajo tres reglas que nunca se rompen:
+**Definición formal:** Un Map es un tipo de dato abstracto que mantiene
+una colección de pares **clave→valor** bajo ciertas reglas fundamentales:
 
-- Cada clave existe a lo sumo una vez. Insertar una clave ya existente
-  reemplaza el valor anterior.
-- La misma clave siempre produce el mismo índice. La función hash
-  es determinista.
-- Todo valor almacenado es alcanzable por su clave.
+- Cada clave existe como máximo una vez.
+- Cada clave está asociada exactamente a un valor.
+- Dada una clave válida, debe poder recuperarse su valor asociado.
 
 **Propiedades clave:**
 
-- **Sin orden:** las claves no se guardan alfabéticamente ni por
-  orden de inserción.
-- **Claves únicas:** no pueden coexistir dos entradas con la misma
-  clave.
-- **Sin restricción sobre valores:** cualquier dato puede ser un valor;
-  la unicidad aplica solo a las claves.
+- **Claves únicas:** no pueden coexistir dos entradas con la misma clave.
+- **Asociación directa:** cada clave referencia un único valor.
+- **Actualización permitida:** si una clave ya existe, su valor puede reemplazarse.
+- **Implementación independiente:** puede construirse mediante hashing, árboles, listas u otras estructuras.
+- **No necesariamente ordenado:** el orden depende de la implementación concreta.
 
 ### Representación
 
-Internamente, un HashMap es un conjunto de posiciones llamadas
-**buckets**. Cada clave pasa por la función hash, que determina en qué
-bucket se almacena el par clave→valor. Cuando dos claves caen en el
-mismo bucket — una **colisión** — hay dos estrategias:
+Un Map es una abstracción lógica, por lo que puede implementarse de diferentes maneras:
 
-**Chaining:** cada bucket contiene una lista de pares. Las colisiones
-se encadenan.
+- **HashMap:** Utiliza funciones hash para lograr un acceso promedio de O(1).
+- **TreeMap:** Usa árboles balanceados para mantener las claves ordenadas, con operaciones O(log n).
+- **Lista o array de pares:** Implementación simple, útil para conjuntos pequeños.
 
-![Chaining](adjuntos/hashmap_chaining.png)
+Logicamente, cada implementación ofrece distintos compromisos entre:
 
-**Open addressing:** cada par vive directamente en el array. Ante una
-colisión, se busca el siguiente bucket libre.
+- Velocidad
+- Uso de memoria
+- Mantenimiento del orden
+- Complejidad de implementación
 
-![Open Addressing](adjuntos/hashmap_open.png)
+Lo importante es que todas respetan la misma interfaz conceptual:
+la de gestionar asociaciones **clave→valor**.
 
-En chaining los buckets crecen hacia afuera; en open addressing todo
-convive dentro de la misma estructura. En chaining, si muchas claves
-colisionan en el mismo bucket, ese bucket puede crecer hasta n elementos
-— ese es el peor caso de todas las operaciones.
+---
 
 ## 2. Operaciones y complejidad
 
