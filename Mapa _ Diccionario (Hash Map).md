@@ -75,47 +75,44 @@ La complejidad de un Map depende de su implementación concreta.
 
 ### Idea de implementación
 
-Un HashMap se implementa sobre un **array de buckets**, donde cada bucket contiene cero o más pares _(clave, valor)_. Para resolver colisiones, la estrategia más simple y común es **chaining**, donde cada bucket es una lista.
+Independientemente de la implementación elegida, el flujo conceptual de las operaciones es siempre el mismo:
 
-**Algoritmos clave (chaining):**
+1. Localizar la clave.
+2. Verificar si existe.
+3. Operar sobre el par clave→valor correspondiente.
+
+**Algoritmos clave:**
 
 - **insert(key, value):**
-  1. Calcular índice: `i = hash(key) % capacidad`
-  2. Recorrer el bucket:
-     - Si la clave existe → reemplazar valor
-     - Si no existe → agregar nuevo par
-  3. Si el factor de carga supera el límite → rehash
+  1. Buscar si la clave ya existe.
+  2. Si existe → reemplazar valor.
+  3. Si no existe → agregar nuevo par clave→valor.
 
 - **find(key):**
-  1. Calcular índice
-  2. Recorrer bucket
-  3. Si encuentra la clave → retorna valor
-  4. Si no → error
+  1. Buscar la clave.
+  2. Si existe → retornar valor asociado.
+  3. Si no → error o valor nulo.
 
 - **delete(key):**
-  1. Calcular índice
-  2. Buscar en el bucket
-  3. Si existe → eliminar
-  4. Si no → no hace nada
+  1. Buscar la clave.
+  2. Si existe → eliminar el par asociado.
+  3. Si no → no hacer nada.
 
 - **update(key, value):**
-  1. Calcular índice
-  2. Recorrer el bucket
-  3. Si encuentra la clave → reemplazar valor
-  4. Si no → error
-
+  1. Buscar la clave.
+  2. Si existe → reemplazar valor.
+  3. Si no → error o inserción según implementación.
+     
 ---
 
 ### Invariantes
 
-Estas condiciones deben cumplirse siempre, sin excepción:
+Estas condiciones deben cumplirse siempre:
 
 - Cada clave aparece **como máximo una vez** en toda la estructura.
-- El tamaño (`size`) coincide con la cantidad real de pares almacenados.
-- Todos los elementos están en el bucket que corresponde a su hash.
-- No hay buckets “perdidos”: todo elemento es alcanzable desde el array.
-- La función hash aplicada a una clave siempre lleva al mismo bucket (mientras no haya rehash).
-- El factor de carga (`size / capacidad`) se mantiene bajo cierto umbral (ej: 0.75).
+- Toda clave tiene asociado exactamente un valor.
+- Las operaciones preservan la consistencia clave→valor.
+- La estructura mantiene accesibles todos los pares almacenados.
 
 ---
 
