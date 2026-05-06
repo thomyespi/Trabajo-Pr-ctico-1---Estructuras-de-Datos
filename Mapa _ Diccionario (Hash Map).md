@@ -118,93 +118,63 @@ Estas condiciones deben cumplirse siempre:
 
 ### Ejemplo de código (Python)
 
-Implementación mínima usando **chaining**:
+Implementación mínima de un **Map** usando una lista de pares clave→valor:
 
 ```python
-class HashMap:
-    def __init__(self, capacity=8):
-        self.capacity = capacity
-        self.size = 0
-        self.buckets = [[] for _ in range(capacity)]
-
-    def _hash(self, key):
-        return hash(key) % self.capacity
+class Map:
+    def __init__(self):
+        self.data = []
 
     def insert(self, key, value):
-        index = self._hash(key)
-        bucket = self.buckets[index]
-
-        for i, (k, v) in enumerate(bucket):
+        for i, (k, v) in enumerate(self.data):
             if k == key:
-                bucket[i] = (key, value)
+                self.data[i] = (key, value)
                 return
+        self.data.append((key, value))
 
-        bucket.append((key, value))
-        self.size += 1
-
-        if self.size / self.capacity > 0.75:
-            self._rehash()
 
     def find(self, key):
-        index = self._hash(key)
-        bucket = self.buckets[index]
-
-        for k, v in bucket:
+        for k, v in self.data:
             if k == key:
                 return v
-
         raise KeyError("Clave no encontrada")
+
 
     def delete(self, key):
-        index = self._hash(key)
-        bucket = self.buckets[index]
-
-        for i, (k, v) in enumerate(bucket):
+        for i, (k, v) in enumerate(self.data):
             if k == key:
-                del bucket[i]
-                self.size -= 1
+                del self.data[i]
                 return
+
 
     def update(self, key, value):
-        index = self._hash(key)
-        bucket = self.buckets[index]
-
-        for i, (k, v) in enumerate(bucket):
+        for i, (k, v) in enumerate(self.data):
             if k == key:
-                bucket[i] = (key, value)
+                self.data[i] = (key, value)
                 return
-
         raise KeyError("Clave no encontrada")
-
-    def _rehash(self):
-        old_buckets = self.buckets
-        self.capacity *= 2
-        self.buckets = [[] for _ in range(self.capacity)]
-        self.size = 0
-
-        for bucket in old_buckets:
-            for k, v in bucket:
-                self.insert(k, v)
 ```
 
-### Ejemplo de Uso típico
+---
+
+### Ejemplo de uso típico
 
 ```python
-m = HashMap()
+m = Map()
 
 m.insert("usuario1", 100)
 m.insert("usuario2", 200)
 
-print(m.find("usuario1"))  # 100
+  print(m.find("usuario1"))  # 100
 
 m.update("usuario1", 150)
 
-print(m.find("usuario1"))  # 150
+  print(m.find("usuario1"))  # 150
 
 m.delete("usuario2")
 ```
 
-### Salida esperada:
+### Salida esperada
 
 ```
 100
