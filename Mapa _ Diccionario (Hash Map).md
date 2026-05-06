@@ -52,21 +52,22 @@ la de gestionar asociaciones **clave→valor**.
 
 ### Operaciones principales
 
-- **`insert(key, value)`:** Agrega un nuevo par clave→valor al mapa. Si la clave ya existe, reemplaza el valor anterior.
-- **`find(key)`:** Dado una clave, retorna el valor asociado. Si la clave no existe, lanza un error.
-- **`delete(key)`:** Elimina un par clave→valor del mapa. Si la clave no existe, no tiene efecto.
-- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente por uno nuevo.
+- **`insert(key, value)`:** Agrega un nuevo par clave→valor. Si la clave ya existe, reemplaza el valor anterior.
+- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, lanza un error.
+- **`delete(key)`:** Elimina un par clave→valor. Si la clave no existe, no tiene efecto.
+- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente.
 
 ### Complejidad
 
-| Operación            | Promedio | Peor caso | Amortizado | Espacio adicional |
-| -------------------- | -------- | --------- | ---------- | ----------------- |
-| `insert(key, value)` | O(1)     | O(n)      | O(1)       | O(1)              |
-| `find(key)`          | O(1)     | O(n)      | —          | O(1)              |
-| `delete(key)`        | O(1)     | O(n)      | —          | O(1)              |
-| `update(key, value)` | O(1)     | O(n)      | —          | O(1)              |
+La complejidad de un Map depende de su implementación concreta.
 
-> **Costo oculto — Rehash:** Cuando el HashMap supera cierto nivel de ocupación llamado _load factor_, crea un array del doble de tamaño y rehashea todas las claves existentes en sus nuevas posiciones. Este proceso cuesta O(n) ya que recorre todos los elementos, pero ocurre tan pocas veces que el costo amortizado de insertar sigue siendo O(1).
+| Implementación | Inserción                      | Búsqueda                       | Eliminación                    |
+| -------------- | ------------------------------ | ------------------------------ | ------------------------------ |
+| HashMap        | O(1) promedio / O(n) peor caso | O(1) promedio / O(n) peor caso | O(1) promedio / O(n) peor caso |
+| TreeMap        | O(log n)                       | O(log n)                       | O(log n)                       |
+| Lista / Array  | O(1) / O(n) según estrategia   | O(n)                           | O(n)                           |
+
+> No existe una única complejidad para los Maps. El rendimiento depende de cómo se implemente internamente.
 
 ---
 
