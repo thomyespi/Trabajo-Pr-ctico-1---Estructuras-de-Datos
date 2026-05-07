@@ -36,7 +36,7 @@ Un Map es una abstracción lógica, por lo que puede implementarse de diferentes
 - **TreeMap:** Usa árboles balanceados para mantener las claves ordenadas, con operaciones O(log n).
 - **Lista o array de pares:** Implementación simple, útil para conjuntos pequeños.
 
-Logicamente, cada implementación ofrece distintos compromisos entre:
+Lógicamente, cada implementación ofrece distintos compromisos entre:
 
 - Velocidad
 - Uso de memoria
@@ -165,11 +165,11 @@ m = Map()
 m.insert("usuario1", 100)
 m.insert("usuario2", 200)
 
-  print(m.find("usuario1"))  # 100
+print(m.find("usuario1"))  # 100
 
 m.update("usuario1", 150)
 
-  print(m.find("usuario1"))  # 150
+print(m.find("usuario1"))  # 150
 
 m.delete("usuario2")
 ```
@@ -187,7 +187,7 @@ m.delete("usuario2")
 
 ### Casos de uso
 
-Un HashMap encaja naturalmente cuando el problema consiste en asociar claves con valores y acceder a ellos de manera rápida.
+Un Map encaja naturalmente cuando el problema consiste en asociar claves con valores y acceder a ellos de manera clara y eficiente.
 
 Ejemplos típicos:
 
@@ -202,42 +202,41 @@ Ejemplos típicos:
 
 No conviene usarlo cuando:
 
-- Se necesita mantener los datos ordenados. Un HashMap no conserva orden alfabético, numérico ni de inserción.
-- Se requiere recorrer los elementos en orden. Para eso suele ser mejor un árbol balanceado o un array ordenado.
+- Se necesita mantener los datos ordenados y la implementación elegida no lo garantiza (ej. un Map basado en hash no conserva orden).
 - El conjunto de claves es muy pequeño. En tamaños chicos, una lista o array puede ser más simple y suficientemente rápido.
-- Se necesita aprovechar memoria al máximo. Un HashMap suele consumir bastante más memoria que otras estructuras debido a buckets vacíos, punteros y espacio reservado.
+- Se necesita aprovechar memoria al máximo. Algunas implementaciones de Map consumen más memoria que estructuras más simples.
 - Las claves cambian constantemente. Modificar una clave implica borrar e insertar nuevamente.
-- Se necesita garantizar rendimiento en el peor caso. Aunque normalmente es O(1), una mala distribución hash puede degradar las operaciones a O(n).
+- Se necesita garantizar rendimiento en el peor caso. El rendimiento real depende de la implementación concreta elegida.
 
 ### Comparaciones
 
-| Estructura       | Ventaja frente a HashMap                                    | Desventaja frente a HashMap      |
-| ---------------- | ----------------------------------------------------------- | -------------------------------- |
-| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n) |
-| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)             |
-| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Operaciones típicamente O(log n) |
-| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados    |
+| Estructura       | Ventaja frente al Map                                       | Desventaja frente al Map                        |
+| ---------------- | ----------------------------------------------------------- | ----------------------------------------------- |
+| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n)                |
+| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)                            |
+| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Más complejo de implementar como TDA base       |
+| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados                   |
 
 ### Ventajas / Desventajas
 
-| Ventajas                                           | Desventajas                                   |
-| -------------------------------------------------- | --------------------------------------------- |
-| Inserción, búsqueda y borrado en O(1) promedio     | No mantiene orden                             |
-| Muy útil para conteo, agrupamiento e indexación    | Puede consumir bastante memoria adicional     |
-| Escala bien para grandes volúmenes de datos        | Depende de una buena función hash             |
-| Permite modelar asociaciones naturales clave→valor | Las colisiones pueden degradar el rendimiento |
-| Simple de usar desde muchos lenguajes modernos     | El rehash puede provocar pausas costosas      |
+| Ventajas                                           | Desventajas                                                          |
+| -------------------------------------------------- | -------------------------------------------------------------------- |
+| Modela asociaciones naturales clave→valor          | El rendimiento depende fuertemente de la implementación elegida      |
+| Muy útil para conteo, agrupamiento e indexación    | Puede consumir más memoria que estructuras más simples               |
+| Escala bien para grandes volúmenes de datos        | No necesariamente mantiene orden entre claves                        |
+| Interfaz simple y uniforme sin importar la impl.   | Cambiar la implementación interna puede tener impacto no obvio       |
+| Ampliamente soportado en lenguajes modernos        | Agregar orden o garantías extra requiere elegir la implementación adecuada |
 
 ### Señales de reconocimiento
 
-Hay varias pistas en un problema que sugieren que un HashMap puede ser la estructura adecuada:
+Hay varias pistas en un problema que sugieren que un Map puede ser la estructura adecuada:
 
-- “Necesitamos encontrar rápidamente un dato a partir de una clave”.
+- “Necesitamos encontrar un dato a partir de una clave”.
 - “Queremos saber cuántas veces aparece cada elemento”.
 - “Hay que detectar duplicados”.
 - “Se necesita agrupar elementos por alguna propiedad”.
-- “Se busca acceso casi inmediato sin importar el tamaño del conjunto”.
 - “Cada elemento tiene un identificador único”.
+- “Queremos modelar una asociación entre dos conjuntos de datos”.
 
 ---
 
@@ -269,15 +268,16 @@ Esto los convierte en una especie de “estructura compuesta”, que reutiliza i
 
 ### Libros
 
-- Cormen et al. — _Introduction to Algorithms_ (CLRS), Cap. 11: Hash Tables.
-- Sedgewick & Wayne — _Algorithms_, Cap. 3: Searching.
+- Cormen et al. — _Introduction to Algorithms_ (CLRS), Cap. 11: Hash Tables _(referencia de una implementación concreta)_.
+- Sedgewick & Wayne — _Algorithms_, Cap. 3: Searching _(cubre Maps con distintas implementaciones: hash y árboles)_.
 
 ### Visualizaciones
 
-- VisuAlgo — Hash Table: `visualgo.net/en/hashtable`
-- CS USF — Hash Table Visualization: `www.cs.usfca.edu/~galles/visualization/OpenHash.html`
+- VisuAlgo — Hash Table: `visualgo.net/en/hashtable` _(implementación basada en hashing)_
+- VisuAlgo — BST / AVL: `visualgo.net/en/bst` _(implementación basada en árbol balanceado)_
 
 ### Documentación
 
-- Python `dict`: `docs.python.org/3/library/stdtypes.html#dict`
-- Java `HashMap`: `docs.oracle.com/en/java/docs/api/java.base/java/util/HashMap.html`
+- Python `dict` (Map basado en hash): `docs.python.org/3/library/stdtypes.html#dict`
+- Java `Map` (interfaz abstracta): `docs.oracle.com/en/java/docs/api/java.base/java/util/Map.html`
+- Java `TreeMap` (Map basado en árbol): `docs.oracle.com/en/java/docs/api/java.base/java/util/TreeMap.html`
