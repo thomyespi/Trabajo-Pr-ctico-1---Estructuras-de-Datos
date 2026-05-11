@@ -1,5 +1,8 @@
-# Mapa / Diccionario (Map)
-
+---
+title: 'Mapa / Diccionario (Map)'
+tags: ['data-structures']
+alias: ['map', 'dictionary', 'mapa', 'diccionario', 'hashmap', 'tabla-de-dispersion']
+---
 ## 1. Qué es y cómo funciona
 
 ### Intuición
@@ -29,6 +32,8 @@ una colección de pares **clave→valor** bajo ciertas reglas fundamentales:
 - **No necesariamente ordenado:** el orden depende de la implementación concreta.
 
 ### Representación
+
+![](/adjuntos/map.svg)
 
 Un Map es una abstracción lógica, por lo que puede implementarse de diferentes maneras:
 
