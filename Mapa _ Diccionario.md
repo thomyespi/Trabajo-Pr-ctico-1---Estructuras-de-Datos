@@ -41,15 +41,9 @@ Un Map es una abstracción lógica, por lo que puede implementarse de diferentes
 - **TreeMap:** Usa árboles balanceados para mantener las claves ordenadas, con operaciones O(log n).
 - **Lista o array de pares:** Implementación simple, útil para conjuntos pequeños.
 
-Lógicamente, cada implementación ofrece distintos compromisos entre:
+Lógicamente, cada implementación ofrece distintas **ventajas y/o desventajas**.
 
-- Velocidad
-- Uso de memoria
-- Mantenimiento del orden
-- Complejidad de implementación
-
-Lo importante es que todas respetan la misma interfaz conceptual:
-la de gestionar asociaciones **clave→valor**.
+Sin embargo, lo importante es que todas respetan la misma idea conceptual: la de gestionar asociaciones **clave→valor**.
 
 ---
 
@@ -198,16 +192,19 @@ Ejemplos típicos:
 
 - Conteo de frecuencias: cantidad de apariciones de palabras, letras o números.
 - Índices por identificador: buscar usuarios por email, productos por código o alumnos por legajo.
-- Cachés y memoización: guardar resultados ya calculados para evitar recomputarlos.
+- Cachés y memorización: guardar resultados ya calculados para evitar recomputarlos.
 - Agrupamiento: agrupar elementos por categoría, fecha, autor, tipo, etc.
 - Verificación de pertenencia: saber rápidamente si una clave ya existe.
 - Tablas de configuración: guardar pares clave→valor como parámetros, opciones o variables.
+
+---
 
 ### Cuándo NO usarlo
 
 No conviene usarlo cuando:
 
-- Se necesita mantener los datos ordenados y la implementación elegida no lo garantiza (ej. un Map basado en hash no conserva orden).
+- Se requiere recorrer elementos en una secuencia lineal.
+- Se necesita mantener los datos ordenados y la implementación elegida no lo garantiza (ej. un HashMap no conserva orden).
 - El conjunto de claves es muy pequeño. En tamaños chicos, una lista o array puede ser más simple y suficientemente rápido.
 - Se necesita aprovechar memoria al máximo. Algunas implementaciones de Map consumen más memoria que estructuras más simples.
 - Las claves cambian constantemente. Modificar una clave implica borrar e insertar nuevamente.
@@ -215,22 +212,24 @@ No conviene usarlo cuando:
 
 ### Comparaciones
 
-| Estructura       | Ventaja frente al Map                                       | Desventaja frente al Map                        |
-| ---------------- | ----------------------------------------------------------- | ----------------------------------------------- |
-| Array            | Menor uso de memoria y acceso por índice real               | Buscar por contenido cuesta O(n)                |
-| Lista enlazada   | Inserciones simples y flexibles                             | Búsqueda lineal O(n)                            |
-| Árbol balanceado | Mantiene elementos ordenados y permite recorrerlos en orden | Más complejo de implementar como TDA base       |
-| Set              | Ideal cuando solo importa saber si una clave existe         | No almacena valores asociados                   |
+| Estructura       | Ventaja frente al Map                                | Desventaja frente al Map                        |
+| ---------------- | ---------------------------------------------------- | ----------------------------------------------- |
+| Array            | Menor uso de memoria y acceso por índice real        | Buscar por contenido cuesta O(n)                |
+| Lista enlazada   | Inserciones simples y flexibles                      | Búsqueda lineal O(n)                            |
+| Árbol balanceado | Mantiene elementos ordenados y recorrerlos en orden  | Mayor complejidad de implementación       |
+| Set              | Ideal cuando solo importa saber si una clave existe  | No almacena valores asociados                   |
 
 ### Ventajas / Desventajas
 
 | Ventajas                                           | Desventajas                                                          |
 | -------------------------------------------------- | -------------------------------------------------------------------- |
-| Modela asociaciones naturales clave→valor          | El rendimiento depende fuertemente de la implementación elegida      |
+| Modela naturalmente relaciones clave→valor         | El rendimiento depende fuertemente de la implementación elegida      |
 | Muy útil para conteo, agrupamiento e indexación    | Puede consumir más memoria que estructuras más simples               |
 | Escala bien para grandes volúmenes de datos        | No necesariamente mantiene orden entre claves                        |
 | Interfaz simple y uniforme sin importar la impl.   | Cambiar la implementación interna puede tener impacto no obvio       |
 | Ampliamente soportado en lenguajes modernos        | Agregar orden o garantías extra requiere elegir la implementación adecuada |
+
+---
 
 ### Señales de reconocimiento
 
@@ -241,7 +240,7 @@ Hay varias pistas en un problema que sugieren que un Map puede ser la estructura
 - “Hay que detectar duplicados”.
 - “Se necesita agrupar elementos por alguna propiedad”.
 - “Cada elemento tiene un identificador único”.
-- “Queremos modelar una asociación entre dos conjuntos de datos”.
+- “Se busca acceso casi inmediato sin importar el tamaño del conjunto”.
 
 ---
 
@@ -257,8 +256,7 @@ Hay varias pistas en un problema que sugieren que un Map puede ser la estructura
   - Arrays, como base para almacenar datos (especialmente en hashing).
   - Listas enlazadas, usadas en manejo de colisiones.
   - Árboles, para mantener orden y garantizar complejidad logarítmica.
-
-Esto los convierte en una especie de “estructura compuesta”, que reutiliza ideas de otras más básicas.
+- Esto los convierte en una especie de “estructura compuesta”, que reutiliza ideas de otras más básicas.
 
 ### Notas avanzadas
 
