@@ -52,9 +52,11 @@ Sin embargo, lo importante es que todas respetan la misma idea conceptual: la de
 ### Operaciones principales
 
 - **`insert(key, value)`:** Agrega un nuevo par clave→valor. Si la clave ya existe, reemplaza el valor anterior.
-- **`find(key)`:** Retorna el valor asociado a una clave. Si no existe, lanza un error.
+- **`find(key)`:** Retorna el valor asociado a una clave. Si la clave no existe, el comportamiento depende de la implementación (por ejemplo: error, valor nulo o valor especial).
 - **`delete(key)`:** Elimina un par clave→valor. Si la clave no existe, no tiene efecto.
-- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente.
+- **`update(key, value)`:** Reemplaza el valor asociado a una clave existente. Si la clave no existe, el comportamiento depende de la implementación (por lo general: la clave se crea automáticamente y se le asigna el valor que se proporcionó, y en algunos casos: error).
+
+---
 
 ### Complejidad
 
@@ -66,6 +68,8 @@ La complejidad de un Map depende de su implementación concreta.
 | TreeMap        | O(log n)                       | O(log n)                       | O(log n)                       |
 | Lista / Array  | O(1) / O(n) según estrategia   | O(n)                           | O(n)                           |
 
+> En implementaciones basadas en arrays o listas, la inserción puede ser O(1) si el elemento se agrega al final sin verificar duplicados, o O(n) si es necesario recorrer la estructura para comprobar si la clave ya existe.
+> 
 > No existe una única complejidad para los Maps. El rendimiento depende de cómo se implemente internamente.
 
 ---
@@ -273,6 +277,9 @@ Hay varias pistas en un problema que sugieren que un Map puede ser la estructura
 
 - Cormen et al. — _Introduction to Algorithms_ (CLRS), Cap. 11: Hash Tables _(referencia de una implementación concreta)_.
 - Sedgewick & Wayne — _Algorithms_, Cap. 3: Searching _(cubre Maps con distintas implementaciones: hash y árboles)_.
+- Goodrich, Tamassia & Goldwasser — _Data Structures and Algorithms in Python_ _(explica el TDA Map y sus distintas implementaciones)_.
+- Weiss — _Data Structures and Algorithm Analysis_ _(incluye estructuras asociativas y diccionarios)_.
+
 
 ### Visualizaciones
 
